@@ -1,10 +1,10 @@
-const screen = document.getElementById("calc-screen")
-const buttons = [...document.getElementsByClassName("calc-button")];
-let current = document.getElementById("current");
-let old = document.getElementById("old");
+const screen = document.getElementById('calc-screen')
+const buttons = [...document.getElementsByClassName('calc-button')];
+let current = document.getElementById('current');
+let old = document.getElementById('old');
 let operators = ['+', '-', '×', '÷'];
 buttons.forEach(element => {
-    element.addEventListener("click", buttonLogic);
+    element.addEventListener('click', buttonLogic);
 });
 let operator = null;
 // The calculator behaves differently after its first calculation has finished (i.e. now if "+" is input, it adds the next number entered after another operation is input (such as "=" or "-"))
@@ -77,8 +77,26 @@ function buttonLogic() {
                     case '÷':
                         divide();
                         initialized = true;
-                        return;
+                        return; 
                 }
+            }
+        case '.':
+            if (current.innerHTML.includes('.')) {
+                return;
+            } else {
+                current.innerHTML += '.';
+                return;
+            }
+        case '+/-':
+            if (current.innerHTML === '0') {
+                return;
+            }
+            if (current.innerHTML[0] === '-') {
+                current.innerHTML = current.innerHTML.slice(1);
+                return;
+            } else {
+                current.innerHTML = '-' + current.innerHTML;
+                return;
             }
     }
 }
@@ -87,7 +105,7 @@ function numHandler(n) {
     numInput = true;
     // Allows chaining of digits in the current segment after a calculation
     if (firstInitDigit) {
-        if (Number(current.innerHTML) == 0) {
+        if (current.innerHTML === '0') {
             current.innerHTML = n;
             return;
         } else {
@@ -96,13 +114,13 @@ function numHandler(n) {
         }
     }
     // Get new digits in the current segment after a calculation
-    if (initialized && this.innerHTML != '0') {
+    if (initialized && this.innerHTML !== '0') {
         old.innerHTML = current.innerHTML;
         current.innerHTML = n;
         firstInitDigit = true;
         return;
     }
-    if (Number(current.innerHTML) == 0) {
+    if (current.innerHTML === '0') {
         current.innerHTML = n;
     } else {
         current.innerHTML += n;
